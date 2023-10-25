@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.lib;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
@@ -20,9 +20,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Utils.Constants;
-import frc.robot.Utils.SwerveSteeringEncoder;
 
-public class SwerveModule {
+public class SdsSwerveModule {
 
   private CANSparkMax driveMotor;
   private SparkMaxPIDController driveMotorController;
@@ -50,10 +49,10 @@ public class SwerveModule {
    * @param turningMotorCANId PWM output for the turning motor.
    * @param turningEncoderCANId DIO input for the turning encoder channel A
    */
-  public SwerveModule(
+  public SdsSwerveModule(
       int driveMotorCANId,
       int turningMotorCANId,
-      int turningEncoderCANId) {
+      int turningEncoderAnalogPort) {
     driveMotor = new CANSparkMax(driveMotorCANId, MotorType.kBrushless);
     turningMotor = new CANSparkMax(turningMotorCANId, MotorType.kBrushed);
     turningMotor.setIdleMode(IdleMode.kBrake);
@@ -64,8 +63,8 @@ public class SwerveModule {
     //REVPhysicsSim.getInstance().addSparkMax(driveMotor, DCMotor.getNEO(1));
     //REVPhysicsSim.getInstance().addSparkMax(turningMotor, DCMotor.getVex775Pro(1));
 
-    iCanId = turningEncoderCANId;
-    turningEncoder = new SwerveSteeringEncoder(turningEncoderCANId);
+    iCanId = turningEncoderAnalogPort;
+    turningEncoder = new SwerveSteeringEncoder(turningEncoderAnalogPort);
 
     /*
      * native units of rpm to m/s

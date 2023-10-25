@@ -1,6 +1,6 @@
 package frc.robot;
 
-import frc.robot.Utils.controls.XBoxController;
+import frc.robot.lib.controls.XBoxController;
 import frc.robot.commands.*;
 
 public class IO { 
