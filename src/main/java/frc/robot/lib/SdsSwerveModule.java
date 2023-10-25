@@ -27,7 +27,7 @@ public class SdsSwerveModule {
   private SparkMaxPIDController driveMotorController;
   private CANSparkMax turningMotor;
 
-  private SwerveSteeringEncoder turningEncoder;
+  private ThriftyEncoder turningEncoder;
 
   private int i;
   private int iCanId;
@@ -47,7 +47,7 @@ public class SdsSwerveModule {
    *
    * @param driveMotorCANId PWM output for the drive motor.
    * @param turningMotorCANId PWM output for the turning motor.
-   * @param turningEncoderCANId DIO input for the turning encoder channel A
+   * @param turningEncoderAnalogPort DIO input for the turning encoder channel A
    */
   public SdsSwerveModule(
       int driveMotorCANId,
@@ -64,7 +64,7 @@ public class SdsSwerveModule {
     //REVPhysicsSim.getInstance().addSparkMax(turningMotor, DCMotor.getVex775Pro(1));
 
     iCanId = turningEncoderAnalogPort;
-    turningEncoder = new SwerveSteeringEncoder(turningEncoderAnalogPort);
+    turningEncoder = new ThriftyEncoder(turningEncoderAnalogPort);
 
     /*
      * native units of rpm to m/s

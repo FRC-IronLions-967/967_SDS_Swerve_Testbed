@@ -27,7 +27,7 @@ public class ThriftySwerveModule {
   private SparkMaxPIDController driveMotorController;
   private CANSparkMax turningMotor;
 
-  private SwerveSteeringEncoder turningEncoder;
+  private ThriftyEncoder turningEncoder;
 
   private int i;
   private int iCanId;
@@ -64,7 +64,7 @@ public class ThriftySwerveModule {
     //REVPhysicsSim.getInstance().addSparkMax(turningMotor, DCMotor.getVex775Pro(1));
 
     iCanId = turningEncoderCANId;
-    turningEncoder = new SwerveSteeringEncoder(turningEncoderCANId);
+    turningEncoder = new ThriftyEncoder(turningEncoderCANId);
 
     /*
      * native units of rpm to m/s
