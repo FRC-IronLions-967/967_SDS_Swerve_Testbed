@@ -22,7 +22,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.IO;
 import frc.robot.Utils.Constants;
+import frc.robot.lib.SdsSwerveModule;
 import frc.robot.lib.controls.XBoxController;
+
 
 
 /** Represents a swerve drive style drivetrain. */
@@ -35,10 +37,10 @@ public class Drivetrain extends SubsystemBase {
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(10);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(10);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(3, 4, 9);
-  private final SwerveModule m_frontRight = new SwerveModule(5, 6, 10);
-  private final SwerveModule m_backLeft = new SwerveModule(1, 2, 12);
-  private final SwerveModule m_backRight = new SwerveModule(7, 8, 11);
+  private final SdsSwerveModule m_frontLeft = new SdsSwerveModule(3, 4, 9);
+  private final SdsSwerveModule m_frontRight = new SdsSwerveModule(5, 6, 10);
+  private final SdsSwerveModule m_backLeft = new SdsSwerveModule(1, 2, 12);
+  private final SdsSwerveModule m_backRight = new SdsSwerveModule(7, 8, 11);
 //first two colums above are done
   private final AHRS m_gyro = new AHRS(SerialPort.Port.kMXP);
 
