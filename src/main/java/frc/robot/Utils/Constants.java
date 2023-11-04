@@ -11,23 +11,23 @@ import frc.robot.commands.DoNothingCommand;
 
 public final class Constants {
 
-    public static final double kMaxSpeed = 4.3; // 4.3 meters per second / 14.2 ft per second
-    public static final double kMaxAcceleration = 2.15; //2.15 meters per second per second
+    public static final double kMaxSpeed = 4.42; // 4.42 meters per second / 14.5 ft per second
+    public static final double kMaxAcceleration = 2.15; // 2.15 meters per second per second
     public static final double kMaxAngularSpeed = 2 * Math.PI; // 1 rotation per second
     public static final double kMaxAngularAcceleration = Math.PI; // 1/2 roation per second squared
-    public static final double kWheelRadius = 0.0406;
+    public static final double kWheelRadius = 0.0483;
     //the number above is acurate
-    public static final double kGearRatio = 5.25;
+    public static final double kGearRatio = 6.75;
     //needs tunings
     public static final double kSecondsPerMinute = 60;
   
     private static final double kModuleMaxAngularVelocity = kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration =
         2 * Math.PI; // radians per second squared
-    public static final Translation2d m_frontLeftLocation = new Translation2d(0.262, -0.298);
-    public static final Translation2d m_frontRightLocation = new Translation2d(0.262, 0.298);
-    public static final Translation2d m_backLeftLocation = new Translation2d(-0.262, -0.298);
-    public static final Translation2d m_backRightLocation = new Translation2d(-0.262, 0.298);
+    public static final Translation2d m_frontLeftLocation = new Translation2d(0.308, -0.308);
+    public static final Translation2d m_frontRightLocation = new Translation2d(0.308, 0.308);
+    public static final Translation2d m_backLeftLocation = new Translation2d(-0.308, -0.308);
+    public static final Translation2d m_backRightLocation = new Translation2d(-0.308, 0.308);
       //real numbers are put in above
     public static final SwerveDriveKinematics m_kinematics =
     new SwerveDriveKinematics(

@@ -47,14 +47,14 @@ public class SdsSwerveModule {
    *
    * @param driveMotorCANId PWM output for the drive motor.
    * @param turningMotorCANId PWM output for the turning motor.
-   * @param turningEncoderAnalogPort DIO input for the turning encoder channel A
+   * @param turningEncoderAnalogPort Analog input for the turning encoder channel A
    */
   public SdsSwerveModule(
       int driveMotorCANId,
       int turningMotorCANId,
       int turningEncoderAnalogPort) {
     driveMotor = new CANSparkMax(driveMotorCANId, MotorType.kBrushless);
-    turningMotor = new CANSparkMax(turningMotorCANId, MotorType.kBrushed);
+    turningMotor = new CANSparkMax(turningMotorCANId, MotorType.kBrushless);
     turningMotor.setIdleMode(IdleMode.kBrake);
     driveMotor.setIdleMode(IdleMode.kCoast);
 
@@ -81,9 +81,9 @@ public class SdsSwerveModule {
     turningPIDController.reset();
     turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
     turningPIDController.setPID(
-      3,
+      1,
       0,
-      0.1);
+      0.0);
   }
 
 
@@ -120,14 +120,13 @@ public class SdsSwerveModule {
     final double turnOutput =
       turningPIDController.calculate(turningEncoder.getAbsolutePosition(), MathUtil.angleModulus(state.angle.getRadians()));
       
-    // if (i == 0) {
-    //   // System.out.println("Measured Angle  " + iCanId + ":   " + driveMotorController.setS(null, i));
-    //   System.out.println("Commanded Speed " + iCanId + ":   " + state.speedMetersPerSecond);
-    //   System.out.println("Motor Speed     " + iCanId + ": " + driveMotor.getEncoder().getVelocity());
-    // }
-    // i = (i + 1) % 100;
-    // final double turnFeedforward =
-    //     m_turnFeedforward.calculate(turningPIDController.getSetpoint().velocity);
+    if (i == 0) {
+      System.out.println("Measured Angle   " + iCanId + ":   " + turningEncoder.getAbsolutePosition());
+      System.out.println("Commanded Angle  " + iCanId + ":   " + state.angle.getRadians());
+      // System.out.println("Commanded Speed " + iCanId + ":   " + state.speedMetersPerSecond);
+      // System.out.println("Motor Speed     " + iCanId + ": " + driveMotor.getEncoder().getVelocity());
+    }
+    i = (i + 1) % 100;
 
     driveMotorController.setReference(state.speedMetersPerSecond, ControlType.kVelocity);
     turningMotor.setVoltage(turnOutput);
