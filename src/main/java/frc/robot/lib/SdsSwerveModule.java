@@ -69,7 +69,7 @@ public class SdsSwerveModule {
     /*
      * native units of rpm to m/s
      */
-    driveMotor.getEncoder().setVelocityConversionFactor(4.3/5700);
+    driveMotor.getEncoder().setVelocityConversionFactor(Constants.kMaxSpeed/5700);
     //driveMotor.getEncoder().setVelocityConversionFactor((2 * Math.PI * kWheelRadius) / (kSecondsPerMinute * kGearRatio));
     //driveMotor.getEncoder().setPositionConversionFactor((2 * Math.PI * kWheelRadius) / (kSecondsPerMinute * kGearRatio));
     driveMotorController = driveMotor.getPIDController();
