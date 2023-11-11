@@ -45,9 +45,9 @@ public final class Constants {
 
     public static final Map<Integer, Double> kSwerveOffsets = new HashMap<>();
     static {
-      kSwerveOffsets.put(0, 0.0);
-      kSwerveOffsets.put(1, 0.0);
-      kSwerveOffsets.put(2, 0.0);
-      kSwerveOffsets.put(3, 0.0);
+      kSwerveOffsets.put(0, 2.017568133691152);
+      kSwerveOffsets.put(1, 1.6252273289298291);
+      kSwerveOffsets.put(2, -2.7157190558997755);
+      kSwerveOffsets.put(3, 0.23217007031624007);
     }
 }

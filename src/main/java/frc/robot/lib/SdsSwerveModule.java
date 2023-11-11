@@ -41,7 +41,7 @@ public class SdsSwerveModule {
   // Gains are for example purposes only - must be determined for your own robot!
   //private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 3);
   //private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(1, 0.5);
-
+  
   /**
    * Constructs a SwerveModule with a drive motor, turning motor, drive encoder and turning encoder.
    *
@@ -59,6 +59,7 @@ public class SdsSwerveModule {
     driveMotor.setIdleMode(IdleMode.kCoast);
 
     turningPIDController.setTolerance(0.08,0.0);
+    
 
     //REVPhysicsSim.getInstance().addSparkMax(driveMotor, DCMotor.getNEO(1));
     //REVPhysicsSim.getInstance().addSparkMax(turningMotor, DCMotor.getVex775Pro(1));
@@ -83,7 +84,7 @@ public class SdsSwerveModule {
     turningPIDController.setPID(
       1,
       0,
-      0.0);
+      0);
   }
 
 

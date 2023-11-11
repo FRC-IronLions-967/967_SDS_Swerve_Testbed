@@ -78,9 +78,9 @@ public class Drivetrain extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
-    // m_frontRight.setDesiredState(swerveModuleStates[1]);
-    // m_backLeft.setDesiredState(swerveModuleStates[2]);
-    // m_backRight.setDesiredState(swerveModuleStates[3]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_backLeft.setDesiredState(swerveModuleStates[2]);
+    m_backRight.setDesiredState(swerveModuleStates[3]);
   }
 
   public void setModuleStates(SwerveModuleState[] swerveModuleStates) {
@@ -113,7 +113,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
-   * Get joystick values
+   * Get joystick values 
    * Set motor inputs
    */
   @Override 
@@ -137,10 +137,11 @@ public class Drivetrain extends SubsystemBase {
       // mathematics). Xbox controllers return positive values when you pull to
       // the right by default.
       final var rot = m_rotLimiter.calculate(
-          MathUtil.applyDeadband(driveController.getRightStickX(), 0.3)
+          MathUtil.applyDeadband(-driveController.getRightStickX(), 0.3)
               * Constants.kMaxAngularSpeed);
 
       drive(xSpeed, ySpeed, rot, fieldRelative);
+      
       
       // Get the rotation of the robot from the gyro.
       var gyroAngle = m_gyro.getRotation2d();
