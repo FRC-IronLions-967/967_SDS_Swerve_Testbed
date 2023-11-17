@@ -5,6 +5,11 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -19,6 +24,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.IO;
 import frc.robot.Utils.Constants;
@@ -31,7 +37,8 @@ import frc.robot.lib.controls.XBoxController;
 public class Drivetrain extends SubsystemBase {
   private int i;
   public boolean fieldRelative;
-
+  
+  private AutoBuilder autoBuilder;
   // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(10);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(10);
@@ -60,6 +67,22 @@ public class Drivetrain extends SubsystemBase {
     m_gyro.reset();
     fieldRelative = true;
     i = 0;
+  
+
+    AutoBuilder.configureHolonomic(
+      this::getPose, // Robot pose supplier
+      this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+      this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+      this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+      new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+      new PIDConstants(0.015, 0.0, 0.0001), // PID Constants for the controller that will correct for translation error
+      new PIDConstants(0.1, 0.0, 0.0),
+          4.5, // Max module speed, in m/s
+          0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+          new ReplanningConfig() // Default path replanning config. See the API for the options here
+      ),
+      this // Reference to this subsystem to set requirements
+  );
   }
 
   /**
@@ -76,6 +99,16 @@ public class Drivetrain extends SubsystemBase {
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_gyro.getFusedHeading()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_backLeft.setDesiredState(swerveModuleStates[2]);
+    m_backRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  public void driveRobotRelative(ChassisSpeeds chassisSpeeds) {
+    var swerveModuleStates =
+        Constants.m_kinematics.toSwerveModuleStates(chassisSpeeds);
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
     m_frontRight.setDesiredState(swerveModuleStates[1]);
@@ -112,6 +145,33 @@ public class Drivetrain extends SubsystemBase {
     //m_odometry.resetPosition(pose, m_gyro.getRotation2d());
   }
 
+  private ChassisSpeeds getChassisSpeeds() {
+    return Constants.m_kinematics.toChassisSpeeds(getStates());
+  }
+
+  private SwerveModuleState[] getStates() {
+    return new SwerveModuleState[] {
+      m_frontLeft.getState(),
+      m_frontRight.getState(),
+      m_backLeft.getState(),
+      m_backRight.getState()
+    };
+  }
+
+  private SwerveModulePosition[] getPosition() {
+    return new SwerveModulePosition[] {
+      m_frontLeft.getPosition(),
+      m_frontRight.getPosition(),
+      m_backLeft.getPosition(),
+      m_backRight.getPosition()
+    };
+  }
+
+  public void toggleFieldRelative(){
+    fieldRelative = !fieldRelative;
+  }
+
+
   /**
    * Get joystick values 
    * Set motor inputs
@@ -141,7 +201,7 @@ public class Drivetrain extends SubsystemBase {
               * Constants.kMaxAngularSpeed);
 
       drive(xSpeed, ySpeed, rot, fieldRelative);
-      
+      updateOdometry();
       
       // Get the rotation of the robot from the gyro.
       var gyroAngle = m_gyro.getRotation2d();
@@ -151,8 +211,12 @@ public class Drivetrain extends SubsystemBase {
       new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
+    });}
 
-      });
-    } 
+
+      public Command getAutoCommand(PathPlannerTrajectory autoPath) {
+        return autoBuilder.followPathWithEvents(autoPath);
+      }
+     
      
 }
