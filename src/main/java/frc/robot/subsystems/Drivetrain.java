@@ -129,7 +129,7 @@ public class Drivetrain extends SubsystemBase {
       // we want a positive value when we pull to the left. Xbox controllers
       // return positive values when you pull to the right by default.
       final var ySpeed = m_yspeedLimiter.calculate(
-          MathUtil.applyDeadband(driveController.getLeftStickX(), 0.3)
+          MathUtil.applyDeadband(-driveController.getLeftStickX(), 0.3)
               * Constants.kMaxSpeed);
 
       // Get the rate of angular rotation. We are inverting this because we want a

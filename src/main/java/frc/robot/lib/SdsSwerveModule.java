@@ -58,7 +58,7 @@ public class SdsSwerveModule {
     turningMotor.setIdleMode(IdleMode.kBrake);
     driveMotor.setIdleMode(IdleMode.kCoast);
 
-    turningPIDController.setTolerance(0.08,0.0);
+    turningPIDController.setTolerance(0.02,0.0);
     
 
     //REVPhysicsSim.getInstance().addSparkMax(driveMotor, DCMotor.getNEO(1));
@@ -82,9 +82,9 @@ public class SdsSwerveModule {
     turningPIDController.reset();
     turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
     turningPIDController.setPID(
-      1,
+      10,
       0,
-      0);
+      .1);
   }
 
 

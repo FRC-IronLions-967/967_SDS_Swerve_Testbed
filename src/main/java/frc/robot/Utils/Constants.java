@@ -24,11 +24,11 @@ public final class Constants {
     private static final double kModuleMaxAngularVelocity = kMaxAngularSpeed;
     private static final double kModuleMaxAngularAcceleration =
         2 * Math.PI; // radians per second squared
-    public static final Translation2d m_frontLeftLocation = new Translation2d(0.308, -0.308);
-    public static final Translation2d m_frontRightLocation = new Translation2d(0.308, 0.308);
-    public static final Translation2d m_backLeftLocation = new Translation2d(-0.308, -0.308);
-    public static final Translation2d m_backRightLocation = new Translation2d(-0.308, 0.308);
-      //real numbers are put in above
+    public static final Translation2d m_frontLeftLocation = new Translation2d(0.308, 0.308);
+    public static final Translation2d m_frontRightLocation = new Translation2d(0.308, -0.308);
+    public static final Translation2d m_backLeftLocation = new Translation2d(-0.308, 0.308);
+    public static final Translation2d m_backRightLocation = new Translation2d(-0.308, -0.308);
+      //real numbers xare put in above
     public static final SwerveDriveKinematics m_kinematics =
     new SwerveDriveKinematics(
        m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
