@@ -2,9 +2,14 @@ package frc.robot.subsystems;
 
 import java.util.List;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.pathplanner.lib.path.PathPoint;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -15,6 +20,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -25,19 +31,16 @@ public class SubsystemsInstance {
    
     private static SubsystemsInstance inst;
 
-    private SendableChooser<PathPlannerTrajectory> autoChooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser;
 
     private SubsystemsInstance() {
         drivetrain = new Drivetrain();
+        autoChooser = AutoBuilder.buildAutoChooser("Default_Auto");
 
         CommandScheduler.getInstance().registerSubsystem(drivetrain);
         
-        PathPlannerTrajectory trajDriveAuto1 = PathPlanner.loadPath("DriveAuto1", new PathConstraints(2, 2));
-        PathPlannerTrajectory trajDriveAuto2 = PathPlanner.loadPath("DriveAuto2", new PathConstraints(2, 2));
-        autoChooser.setDefaultOption("Drive Auto Loading Side", trajDriveAuto1);
-        autoChooser.addOption("Drive Auto Cable Cover Side", trajDriveAuto2);
         
-
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
     public static SubsystemsInstance getInstance () {
         if(inst == null) inst = new SubsystemsInstance();
@@ -46,7 +49,7 @@ public class SubsystemsInstance {
 
     }
 
-    public Command getAutoCommand() {
-        return drivetrain.getAutoCommand(autoChooser.getSelected());
+    public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
     }
 }

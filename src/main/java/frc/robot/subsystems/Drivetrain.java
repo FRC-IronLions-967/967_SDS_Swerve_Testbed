@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerTrajectory;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -77,8 +78,8 @@ public class Drivetrain extends SubsystemBase {
       new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
       new PIDConstants(0.015, 0.0, 0.0001), // PID Constants for the controller that will correct for translation error
       new PIDConstants(0.1, 0.0, 0.0),
-          4.5, // Max module speed, in m/s
-          0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+          Constants.kMaxSpeed, // Max module speed, in m/s
+          Math.sqrt(0.308 * 0.308 + 0.308 * 0.308), // Drive base radius in meters. Distance from robot center to furthest module.
           new ReplanningConfig() // Default path replanning config. See the API for the options here
       ),
       this // Reference to this subsystem to set requirements
@@ -212,11 +213,5 @@ public class Drivetrain extends SubsystemBase {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
     });}
-
-
-      public Command getAutoCommand(PathPlannerTrajectory autoPath) {
-        return autoBuilder.followPathWithEvents(autoPath);
-      }
-     
      
 }
