@@ -74,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
     var swerveModuleStates =
         Constants.m_kinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_gyro.getFusedHeading()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(-m_gyro.getFusedHeading()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -122,14 +122,14 @@ public class Drivetrain extends SubsystemBase {
       // Get the x speed. We are inverting this because Xbox controllers return
       // negative values when we push forward.
       final var xSpeed = m_xspeedLimiter.calculate(
-      -MathUtil.applyDeadband(driveController.getLeftStickY(), 0.3)
+      -MathUtil.applyDeadband(driveController.getLeftStickY(), 0.2)
           * Constants.kMaxSpeed);
 
       // Get the y speed or sideways/strafe speed. We are inverting this because
       // we want a positive value when we pull to the left. Xbox controllers
       // return positive values when you pull to the right by default.
       final var ySpeed = m_yspeedLimiter.calculate(
-          MathUtil.applyDeadband(-driveController.getLeftStickX(), 0.3)
+          MathUtil.applyDeadband(-driveController.getLeftStickX(), 0.2)
               * Constants.kMaxSpeed);
 
       // Get the rate of angular rotation. We are inverting this because we want a
@@ -137,7 +137,7 @@ public class Drivetrain extends SubsystemBase {
       // mathematics). Xbox controllers return positive values when you pull to
       // the right by default.
       final var rot = m_rotLimiter.calculate(
-          MathUtil.applyDeadband(-driveController.getRightStickX(), 0.3)
+          MathUtil.applyDeadband(-driveController.getRightStickX(), 0.2)
               * Constants.kMaxAngularSpeed);
 
       drive(xSpeed, ySpeed, rot, fieldRelative);
@@ -145,13 +145,13 @@ public class Drivetrain extends SubsystemBase {
       
       // Get the rotation of the robot from the gyro.
       var gyroAngle = m_gyro.getRotation2d();
+      // System.out.println(m_gyro.getFusedHeading());
 
       // Update the pose
       var m_pose = m_odometry.update(gyroAngle,
       new SwerveModulePosition[] {
       m_frontLeft.getPosition(), m_frontRight.getPosition(),
       m_backLeft.getPosition(), m_backRight.getPosition()
-
       });
     } 
      

@@ -74,10 +74,10 @@ public class SdsSwerveModule {
     //driveMotor.getEncoder().setVelocityConversionFactor((2 * Math.PI * kWheelRadius) / (kSecondsPerMinute * kGearRatio));
     //driveMotor.getEncoder().setPositionConversionFactor((2 * Math.PI * kWheelRadius) / (kSecondsPerMinute * kGearRatio));
     driveMotorController = driveMotor.getPIDController();
-    driveMotorController.setP(0.05);
+    driveMotorController.setP(0.08);
     driveMotorController.setI(0.0);
     driveMotorController.setD(0.025);
-    driveMotorController.setFF(0.3);
+    driveMotorController.setFF(0.35);
 
     turningPIDController.reset();
     turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
@@ -122,8 +122,8 @@ public class SdsSwerveModule {
       turningPIDController.calculate(turningEncoder.getAbsolutePosition(), MathUtil.angleModulus(state.angle.getRadians()));
       
     if (i == 0) {
-      System.out.println("Measured Angle   " + iCanId + ":   " + turningEncoder.getAbsolutePosition());
-      System.out.println("Commanded Angle  " + iCanId + ":   " + state.angle.getRadians());
+      // System.out.println("Measured Angle   " + iCanId + ":   " + turningEncoder.getAbsolutePosition());
+      // System.out.println("Commanded Angle  " + iCanId + ":   " + state.angle.getRadians());
       // System.out.println("Commanded Speed " + iCanId + ":   " + state.speedMetersPerSecond);
       // System.out.println("Motor Speed     " + iCanId + ": " + driveMotor.getEncoder().getVelocity());
     }
