@@ -74,7 +74,7 @@ public class SdsSwerveModule {
     //driveMotor.getEncoder().setVelocityConversionFactor((2 * Math.PI * kWheelRadius) / (kSecondsPerMinute * kGearRatio));
     //driveMotor.getEncoder().setPositionConversionFactor((2 * Math.PI * kWheelRadius) / (kSecondsPerMinute * kGearRatio));
     driveMotorController = driveMotor.getPIDController();
-    driveMotorController.setP(0.05);
+    driveMotorController.setP(0.075);
     driveMotorController.setI(0.0);
     driveMotorController.setD(0.025);
     driveMotorController.setFF(0.3);
